@@ -1,14 +1,13 @@
 import React from 'react';
-import Header from "../components/Header.tsx";
-import Footer from "../components/Footer.tsx";
-import ActivismPromo from '../components/ActivismPromo.tsx';
+import Sidebar from "../components/Sidebar";
+import EventListing from "../components/EventListing";
+import ActivismPromo from '../components/ActivismPromo';
 
 const Home: React.FC = () => {
   return (
     <div>
-      <Header />
+      <Sidebar />
       <ActivismPromo />
-      <Footer />
     </div>
   );
 };

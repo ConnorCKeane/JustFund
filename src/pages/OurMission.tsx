@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from "../components/Header.tsx";
-import Footer from "../components/Footer.tsx";
+import Sidebar from "../components/Sidebar";
+import EventListing from "../components/EventListing";
 import { Box, Typography, Grid, Card, CardContent, CardMedia } from '@mui/material';
 
 const linkedinLogo = "/LinkedInLogo2.png"; // Replace with actual LinkedIn logo image path or URL
@@ -32,7 +32,7 @@ const teamMembers = [
 const OurMission: React.FC = () => {
   return (
     <div>
-      <Header />
+      <Sidebar />
       <Box sx={{ padding: 4, backgroundColor: '#fcf7ed'}}>
         <Typography variant="h5" align="center" gutterBottom paddingBottom={1} style={{color: "#4d7a57"}}>
           Our Mission
@@ -76,7 +76,7 @@ const OurMission: React.FC = () => {
           ))}
         </Grid>
       </Box>
-      <Footer/>
+    
     </div>
   );
 }

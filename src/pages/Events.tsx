@@ -1,15 +1,12 @@
 import React from 'react';
-import Header from "../components/Header.tsx";
-import Footer from "../components/Footer.tsx";
-import EventListing from "../components/EventListing.tsx";
+import Sidebar from "../components/Sidebar";
+import EventListing from "../components/EventListing";
 
 const Events: React.FC = () => {
   return (
     <div>
-      <Header />
+      <Sidebar />
       <EventListing />
-  
-      <Footer />
     </div>
   );
 };

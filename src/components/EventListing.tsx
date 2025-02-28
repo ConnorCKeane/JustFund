@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import debounce from "lodash.debounce";
-import AOS from "aos";
 import "aos/dist/aos.css"; // AOS animations
 import {
   Dialog,
@@ -33,117 +31,49 @@ const EventListing: React.FC = () => {
   const [isPrivate, setIsPrivate] = useState<boolean>(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
-  // New test events (rallies, food drives, etc)
+  // Test events
   const initialEvents: Event[] = [
     {
       eventId: "1",
       title: "Community Rally",
-      description:
-        "Join us for a rally in support of local environmental initiatives.",
+      description: "Join us for a rally in support of local environmental initiatives.",
       imageUrl: "https://picsum.photos/seed/rally/400/300",
       isPrivate: false,
     },
     {
       eventId: "2",
       title: "Food Drive Extravaganza",
-      description:
-        "Help us collect food for the needy. Your donation can make a difference!",
+      description: "Help us collect food for the needy. Your donation can make a difference!",
       imageUrl: "https://picsum.photos/seed/fooddrive/400/300",
       isPrivate: false,
     },
     {
       eventId: "3",
       title: "Charity Marathon",
-      description:
-        "Run for a cause! Participate in our marathon to support community programs.",
+      description: "Run for a cause! Participate in our marathon to support community programs.",
       imageUrl: "https://picsum.photos/seed/marathon/400/300",
       isPrivate: true,
     },
     {
       eventId: "4",
       title: "Neighborhood Cleanup",
-      description:
-        "Gather together to clean and beautify our local parks and streets.",
+      description: "Gather together to clean and beautify our local parks and streets.",
       imageUrl: "https://picsum.photos/seed/cleanup/400/300",
       isPrivate: false,
     },
     {
       eventId: "5",
       title: "Book Donation Drive",
-      description:
-        "Donate books to help spread literacy in underprivileged communities.",
+      description: "Donate books to help spread literacy in underprivileged communities.",
       imageUrl: "https://picsum.photos/seed/books/400/300",
       isPrivate: false,
     },
   ];
 
   const [events, setEvents] = useState<Event[]>(initialEvents);
-
-  useEffect(() => {
-    AOS.init({ duration: 2000, once: true });
-  }, []);
-
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [isGenerating, setIsGenerating] = useState(false);
-
-  // Function to generate a description using OpenAI's API
-  const generateDescription = async (title: string) => {
-    if (title.trim() === "") {
-      setDescription("");
-      return;
-    }
-
-    setIsGenerating(true);
-
-    try {
-      const prompt = `Write a very brief casual description for the following event title that reflects community activism and engagement: "${title}".`;
-
-      const gptResponse = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: prompt }],
-          max_tokens: 100,
-        }),
-      });
-
-      const gptData = await gptResponse.json();
-
-      if (gptData && gptData.choices && gptData.choices.length > 0) {
-        const generatedDescription = gptData.choices[0].message.content.trim();
-        setDescription(generatedDescription);
-      } else {
-        console.error("Unexpected response format:", gptData);
-        setDescription("Unable to generate description at this time.");
-      }
-    } catch (error) {
-      console.error("Error generating description:", error);
-      setDescription("An error occurred while generating the description.");
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const debouncedGenerateDescription = useMemo(
-    () =>
-      debounce((title: string) => {
-        generateDescription(title);
-      }, 1000),
-    []
-  );
-
-  useEffect(() => {
-    if (title.trim()) {
-      debouncedGenerateDescription(title);
-    } else {
-      setDescription("");
-    }
-  }, [title, debouncedGenerateDescription]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -151,7 +81,6 @@ const EventListing: React.FC = () => {
     }
   };
 
-  // Instead of submitting to AWS, add the new event directly to local state
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const imageUrl = image ? URL.createObjectURL(image) : "https://via.placeholder.com/400x300";
@@ -165,7 +94,6 @@ const EventListing: React.FC = () => {
     };
 
     setEvents([...events, newEvent]);
-
     setTitle("");
     setDescription("");
     setImage(null);
@@ -182,7 +110,7 @@ const EventListing: React.FC = () => {
 
   return (
     <div style={{ width: "100%", backgroundColor: "#fcf7ed" }}>
-      {/* Header with activism-themed colors */}
+      {/* Header */}
       <div className="container">
         <div className="row align-items-center mb-4" style={{ paddingTop: "60px" }}>
           <div className="col-md-10 text-center text-md-left">
@@ -209,37 +137,17 @@ const EventListing: React.FC = () => {
       </div>
 
       <Dialog open={showModal} onClose={() => setShowModal(false)} fullWidth maxWidth="md">
-        <DialogTitle
-          style={{
-            backgroundColor: "#4d7a57",
-            color: "white",
-            fontWeight: "bold",
-            textAlign: "center",
-          }}
-        >
+        <DialogTitle style={{ backgroundColor: "#4d7a57", color: "white", fontWeight: "bold", textAlign: "center" }}>
           Create a New Event
         </DialogTitle>
         <DialogContent style={{ padding: "30px" }}>
-          <div style={{ display: "flex", alignItems: "center", marginBottom: "20px"}}>
+          <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
             <FormControlLabel
-              control={
-                <Switch checked={isPrivate} onChange={() => setIsPrivate(!isPrivate)} />
-              }
+              control={<Switch checked={isPrivate} onChange={() => setIsPrivate(!isPrivate)} />}
               label="Keep Organizer Private"
             />
-            <Tooltip
-              title="If enabled, the organizer's identity won't be shown publicly."
-              placement="top"
-              arrow
-            >
-              <InfoIcon
-                style={{
-                  fontSize: "20px",
-                  color: "#888",
-                  marginLeft: "8px",
-                  cursor: "pointer",
-                }}
-              />
+            <Tooltip title="If enabled, the organizer's identity won't be shown publicly." placement="top" arrow>
+              <InfoIcon style={{ fontSize: "20px", color: "#888", marginLeft: "8px", cursor: "pointer" }} />
             </Tooltip>
           </div>
           <TextField
@@ -260,7 +168,7 @@ const EventListing: React.FC = () => {
             variant="outlined"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Description will be generated based on the title"
+            placeholder="Enter a brief description"
             margin="normal"
             required
             disabled={isGenerating}
@@ -294,15 +202,10 @@ const EventListing: React.FC = () => {
       {/* Render events */}
       <div
         className="row justify-content-around mt-5 d-flex flex-wrap"
-        style={{
-          width: "100%",
-          justifyContent: "space-around",
-          paddingLeft: "17px",
-          backgroundColor: "#fcf7ed",
-        }}
+        style={{ width: "100%", justifyContent: "space-around", paddingLeft: "17px", backgroundColor: "#fcf7ed" }}
       >
         {events.map((event) => (
-          <div className="col-md-3 mb-4" key={event.eventId} data-aos="fade-up">
+          <div className="col-md-3 mb-4" key={event.eventId}>
             <div
               className="card h-100 d-flex flex-column position-relative product-card shadow-lg rounded hover-scale"
               onClick={() => handleCardClick(event)}
@@ -335,12 +238,7 @@ const EventListing: React.FC = () => {
       </div>
 
       {selectedEvent && (
-        <div
-          className="modal fade show d-block"
-          tabIndex={-1}
-          role="dialog"
-          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-        >
+        <div className="modal fade show d-block" tabIndex={-1} role="dialog" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
           <div
             className="modal-dialog"
             role="document"
@@ -361,11 +259,7 @@ const EventListing: React.FC = () => {
                 <img
                   src={selectedEvent.imageUrl}
                   alt={selectedEvent.title}
-                  style={{
-                    objectFit: "cover",
-                    height: "100%",
-                    width: "100%",
-                  }}
+                  style={{ objectFit: "cover", height: "100%", width: "100%" }}
                 />
               </div>
               <div
@@ -384,9 +278,7 @@ const EventListing: React.FC = () => {
                     {selectedEvent.title}
                   </h2>
                   {selectedEvent.isPrivate && (
-                    <h6 style={{ color: "#4d7a57", marginBottom: "20px" }}>
-                      Organizer: Private
-                    </h6>
+                    <h6 style={{ color: "#4d7a57", marginBottom: "20px" }}>Organizer: Private</h6>
                   )}
                   <p style={{ color: "#4d7a57" }}>{selectedEvent.description}</p>
                 </div>
