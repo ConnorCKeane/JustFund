@@ -34,13 +34,13 @@ const events = [
   },
 ];
 
-// Define a keyframes animation for horizontal scrolling.
+// Updated keyframes animation that starts at 0% (content visible) and scrolls seamlessly.
 const scrollAnimation = keyframes`
   0% {
-    transform: translateX(100%);
+    transform: translateX(0%);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 `;
 
@@ -49,23 +49,22 @@ const LandingPage = () => {
   const [startTime] = useState(new Date());
   const startTimeFormatted = startTime.toLocaleTimeString();
 
-  // Define the "true" rates (counts per second) for each statistic.
-  const RATE_WRONGFUL = 0.5; // e.g., one hate crime every 2 seconds
-  const RATE_UNJUST = 1;     // e.g., one wrongful incarceration per second
-  const RATE_BIAS = 0.2;     // e.g., one systemic bias case every 5 seconds
+  // Define rates (counts per second) for each statistic.
+  const RATE_WRONGFUL = 0.5;
+  const RATE_UNJUST = 1;
+  const RATE_BIAS = 0.2;
 
   // Track elapsed time (in seconds) since the page loaded.
   const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
-    // Update elapsed time every 100ms.
     const timer = setInterval(() => {
       setElapsed((Date.now() - startTime.getTime()) / 1000);
     }, 100);
     return () => clearInterval(timer);
   }, [startTime]);
 
-  // Compute counters based on elapsed time.
+  // Compute counters.
   const counter1 = Math.floor(elapsed * RATE_WRONGFUL);
   const counter2 = Math.floor(elapsed * RATE_UNJUST);
   const counter3 = Math.floor(elapsed * RATE_BIAS);
@@ -73,7 +72,8 @@ const LandingPage = () => {
   return (
     <Box
       sx={{
-        width: "100%",
+        ml: "200px", // Offset by sidebar width
+        width: "calc(100% - 200px)",
         minHeight: "100vh",
         backgroundColor: "#fcf7ed",
         py: 4,
@@ -82,12 +82,9 @@ const LandingPage = () => {
       }}
     >
       <Container maxWidth="md">
-        {/* Impactful phrase */}
+        {/* Impactful Phrase */}
         <Box sx={{ textAlign: "center", mb: 2 }}>
-          <Typography
-            variant="h3"
-            sx={{ color: "#4d7a57", fontWeight: 900, pb: 1 }}
-          >
+          <Typography variant="h3" sx={{ color: "#4d7a57", fontWeight: 900, pb: 1 }}>
             Injustice Cannot Wait
           </Typography>
         </Box>
@@ -99,10 +96,7 @@ const LandingPage = () => {
               <Typography variant="body1" sx={{ color: "#4d7a57", fontSize: "1.2rem" }}>
                 Hate Crimes Occurrences as of {startTimeFormatted}:
               </Typography>
-              <Typography
-                variant="h2"
-                sx={{ color: "#4d7a57", fontWeight: 700, fontSize: "3rem" }}
-              >
+              <Typography variant="h2" sx={{ color: "#4d7a57", fontWeight: 700, fontSize: "3rem" }}>
                 {counter1}
               </Typography>
             </Grid>
@@ -110,10 +104,7 @@ const LandingPage = () => {
               <Typography variant="body1" sx={{ color: "#4d7a57", fontSize: "1.2rem" }}>
                 Wrongful Incarcerations as of {startTimeFormatted}:
               </Typography>
-              <Typography
-                variant="h2"
-                sx={{ color: "#4d7a57", fontWeight: 700, fontSize: "3rem" }}
-              >
+              <Typography variant="h2" sx={{ color: "#4d7a57", fontWeight: 700, fontSize: "3rem" }}>
                 {counter2}
               </Typography>
             </Grid>
@@ -121,10 +112,7 @@ const LandingPage = () => {
               <Typography variant="body1" sx={{ color: "#4d7a57", fontSize: "1.2rem" }}>
                 Systemic Bias Cases as of {startTimeFormatted}:
               </Typography>
-              <Typography
-                variant="h2"
-                sx={{ color: "#4d7a57", fontWeight: 700, fontSize: "3rem" }}
-              >
+              <Typography variant="h2" sx={{ color: "#4d7a57", fontWeight: 700, fontSize: "3rem" }}>
                 {counter3}
               </Typography>
             </Grid>
@@ -142,17 +130,10 @@ const LandingPage = () => {
             background: "linear-gradient(135deg, #fdfcfb, #e2d1c3)",
           }}
         >
-          <Typography
-            variant="h3"
-            component="h1"
-            sx={{ color: "#4d7a57", fontWeight: 600, mb: 2 }}
-          >
+          <Typography variant="h3" component="h1" sx={{ color: "#4d7a57", fontWeight: 600, mb: 2 }}>
             Stay Informed
           </Typography>
-          <Typography
-            variant="body1"
-            sx={{ color: "#4d7a57", mb: 3, fontSize: "18px" }}
-          >
+          <Typography variant="body1" sx={{ color: "#4d7a57", mb: 3, fontSize: "18px" }}>
             Sign up for email updates on upcoming rallies and volunteer opportunities.
           </Typography>
           <Box
@@ -177,13 +158,8 @@ const LandingPage = () => {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "8px",
-                  "& fieldset": {
-                    borderColor: "#2E8B57",
-                    borderWidth: "2px",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#2E8B57",
-                  },
+                  "& fieldset": { borderColor: "#2E8B57", borderWidth: "2px" },
+                  "&:hover fieldset": { borderColor: "#2E8B57" },
                 },
               }}
             />
@@ -206,13 +182,9 @@ const LandingPage = () => {
           </Box>
         </Paper>
 
-        {/* Act Now Section with Ambient Scrolling Events */}
+        {/* Act Now Section */}
         <Box sx={{ mb: 4 }}>
-          <Typography
-            variant="h4"
-            component="h2"
-            sx={{ color: "#4d7a57", fontWeight: 600, textAlign: "center", mb: 2 }}
-          >
+          <Typography variant="h4" component="h2" sx={{ color: "#4d7a57", fontWeight: 600, textAlign: "center", mb: 2 }}>
             Act Now
           </Typography>
           <Box sx={{ overflow: "hidden", position: "relative" }}>
@@ -242,10 +214,7 @@ const LandingPage = () => {
                       }}
                     />
                     <CardContent>
-                      <Typography
-                        variant="h6"
-                        sx={{ color: "#4d7a57", fontWeight: 600 }}
-                      >
+                      <Typography variant="h6" sx={{ color: "#4d7a57", fontWeight: 600 }}>
                         {event.title}
                       </Typography>
                       <Typography variant="body2" sx={{ color: "#4d7a57" }}>
@@ -255,7 +224,7 @@ const LandingPage = () => {
                   </Card>
                 </Box>
               ))}
-              {/* Duplicate events to allow for smooth continuous scrolling */}
+              {/* Duplicate events for seamless continuous scrolling */}
               {events.map((event) => (
                 <Box key={`duplicate-${event.id}`} sx={{ minWidth: "300px" }}>
                   <Card
@@ -275,10 +244,7 @@ const LandingPage = () => {
                       }}
                     />
                     <CardContent>
-                      <Typography
-                        variant="h6"
-                        sx={{ color: "#4d7a57", fontWeight: 600 }}
-                      >
+                      <Typography variant="h6" sx={{ color: "#4d7a57", fontWeight: 600 }}>
                         {event.title}
                       </Typography>
                       <Typography variant="body2" sx={{ color: "#4d7a57" }}>

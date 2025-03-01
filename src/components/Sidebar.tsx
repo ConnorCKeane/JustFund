@@ -70,12 +70,12 @@ const Sidebar = () => {
         }}
       >
         <NavLink
-          to="/activism"
-          style={() => linkStyle("Activism")}
-          onMouseEnter={() => handleMouseEnter("Activism")}
+          to="/Home"
+          style={() => linkStyle("Home")}
+          onMouseEnter={() => handleMouseEnter("Home")}
           onMouseLeave={handleMouseLeave}
         >
-          Activism
+          Home
         </NavLink>
         <NavLink
           to="/events"
@@ -86,9 +86,9 @@ const Sidebar = () => {
           Events
         </NavLink>
         <NavLink
-          to="/about"
-          style={() => linkStyle("About")}
-          onMouseEnter={() => handleMouseEnter("About")}
+          to="/OurMission"
+          style={() => linkStyle("OurMission")}
+          onMouseEnter={() => handleMouseEnter("OurMission")}
           onMouseLeave={handleMouseLeave}
         >
           About
