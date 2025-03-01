@@ -1,19 +1,7 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "aos/dist/aos.css"; // AOS animations
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  Switch,
-  FormControlLabel,
-  Tooltip,
-  TextField,
-  CircularProgress,
-} from "@mui/material";
-import InfoIcon from "@mui/icons-material/Info";
+import { Dialog, DialogTitle, DialogContent, Button } from "@mui/material";
 import Sidebar from "../components/Sidebar";
 import "./ProductListing.css";
 
@@ -27,79 +15,51 @@ interface Event {
 }
 
 const EventListing: React.FC = () => {
-  const [image, setImage] = useState<File | null>(null);
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [isPrivate, setIsPrivate] = useState<boolean>(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
   // Test events
-  const initialEvents: Event[] = [
+  const events: Event[] = [
     {
       eventId: "1",
       title: "Community Rally",
-      description: "Join us for a rally in support of local environmental initiatives.",
+      description:
+        "Join us for a rally in support of local environmental initiatives.",
       imageUrl: "https://picsum.photos/seed/rally/400/300",
       isPrivate: false,
     },
     {
       eventId: "2",
       title: "Food Drive Extravaganza",
-      description: "Help us collect food for the needy. Your donation can make a difference!",
+      description:
+        "Help us collect food for the needy. Your donation can make a difference!",
       imageUrl: "https://picsum.photos/seed/fooddrive/400/300",
       isPrivate: false,
     },
     {
       eventId: "3",
       title: "Charity Marathon",
-      description: "Run for a cause! Participate in our marathon to support community programs.",
+      description:
+        "Run for a cause! Participate in our marathon to support community programs.",
       imageUrl: "https://picsum.photos/seed/marathon/400/300",
       isPrivate: true,
     },
     {
       eventId: "4",
       title: "Neighborhood Cleanup",
-      description: "Gather together to clean and beautify our local parks and streets.",
+      description:
+        "Gather together to clean and beautify our local parks and streets.",
       imageUrl: "https://picsum.photos/seed/cleanup/400/300",
       isPrivate: false,
     },
     {
       eventId: "5",
       title: "Book Donation Drive",
-      description: "Donate books to help spread literacy in underprivileged communities.",
+      description:
+        "Donate books to help spread literacy in underprivileged communities.",
       imageUrl: "https://picsum.photos/seed/books/400/300",
       isPrivate: false,
     },
   ];
-
-  const [events, setEvents] = useState<Event[]>(initialEvents);
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [isGenerating, setIsGenerating] = useState(false);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setImage(e.target.files[0]);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const imageUrl = image ? URL.createObjectURL(image) : "https://via.placeholder.com/400x300";
-
-    const newEvent: Event = {
-      eventId: Date.now().toString(),
-      title,
-      description,
-      imageUrl,
-      isPrivate,
-    };
-
-    setEvents([...events, newEvent]);
-    setTitle("");
-    setDescription("");
-    setImage(null);
-    setShowModal(false);
-  };
 
   const handleCardClick = (event: Event) => {
     setSelectedEvent(event);
@@ -115,101 +75,39 @@ const EventListing: React.FC = () => {
       <Sidebar />
 
       {/* Main content container offset to prevent overlapping with the sidebar */}
-      <div style={{ marginLeft: "200px", width: "calc(100% - 200px)", backgroundColor: "#fcf7ed" }}>
+      <div
+        style={{
+          marginLeft: "200px",
+          width: "calc(100% - 200px)",
+          backgroundColor: "#fcf7ed",
+        }}
+      >
         {/* Header */}
         <div className="container">
-          <div className="row align-items-center mb-4" style={{ paddingTop: "60px" }}>
-            <div className="col-md-10 text-center text-md-left">
-              <h1 style={{ fontWeight: "bold", color: "#4d7a57" }}>Community Events</h1>
+          <div
+            className="row align-items-center mb-4"
+            style={{ paddingTop: "60px" }}
+          >
+            <div className="col-12 text-center">
+              <h1 style={{ fontWeight: "bold", color: "#4d7a57" }}>
+                Act Now
+              </h1>
               <p style={{ color: "#4d7a57" }}>
                 Explore local activism initiatives—from rallies to food drives
               </p>
             </div>
-            <div className="col-md-2 text-md-right text-center ml-auto px-5">
-              <Button
-                variant="contained"
-                onClick={() => setShowModal(true)}
-                style={{
-                  backgroundColor: "#4d7a57",
-                  color: "white",
-                  fontSize: "1.5rem",
-                  fontWeight: "bold",
-                }}
-              >
-                +
-              </Button>
-            </div>
           </div>
         </div>
-
-        {/* Create Event Modal */}
-        <Dialog open={showModal} onClose={() => setShowModal(false)} fullWidth maxWidth="md">
-          <DialogTitle style={{ backgroundColor: "#4d7a57", color: "white", fontWeight: "bold", textAlign: "center" }}>
-            Create a New Event
-          </DialogTitle>
-          <DialogContent style={{ padding: "30px" }}>
-            <div style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
-              <FormControlLabel
-                control={<Switch checked={isPrivate} onChange={() => setIsPrivate(!isPrivate)} />}
-                label="Keep Organizer Private"
-              />
-              <Tooltip title="If enabled, the organizer's identity won't be shown publicly." placement="top" arrow>
-                <InfoIcon style={{ fontSize: "20px", color: "#888", marginLeft: "8px", cursor: "pointer" }} />
-              </Tooltip>
-            </div>
-            <TextField
-              fullWidth
-              label="Event Title"
-              variant="outlined"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter the title of the event"
-              margin="normal"
-              required
-            />
-            <TextField
-              fullWidth
-              multiline
-              rows={3}
-              label="Description"
-              variant="outlined"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter a brief description"
-              margin="normal"
-              required
-              disabled={isGenerating}
-              InputProps={{
-                endAdornment: isGenerating ? <CircularProgress size={20} /> : null,
-              }}
-            />
-            <TextField
-              fullWidth
-              type="file"
-              inputProps={{ accept: "image/*" }}
-              onChange={handleImageChange}
-              margin="normal"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button variant="outlined" onClick={() => setShowModal(false)} style={{ color: "#1B5E20" }}>
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "#2E7D32", color: "white" }}
-              onClick={handleSubmit}
-              disabled={isGenerating}
-            >
-              Submit
-            </Button>
-          </DialogActions>
-        </Dialog>
 
         {/* Render Events */}
         <div
           className="row justify-content-around mt-5 d-flex flex-wrap"
-          style={{ width: "100%", justifyContent: "space-around", paddingLeft: "17px", backgroundColor: "#fcf7ed" }}
+          style={{
+            width: "100%",
+            justifyContent: "space-around",
+            paddingLeft: "17px",
+            backgroundColor: "#fcf7ed",
+          }}
         >
           {events.map((event) => (
             <div className="col-md-3 mb-4" key={event.eventId}>
@@ -290,13 +188,23 @@ const EventListing: React.FC = () => {
                   }}
                 >
                   <div>
-                    <h2 style={{ marginBottom: "10px", wordWrap: "break-word", color: "#4d7a57" }}>
+                    <h2
+                      style={{
+                        marginBottom: "10px",
+                        wordWrap: "break-word",
+                        color: "#4d7a57",
+                      }}
+                    >
                       {selectedEvent.title}
                     </h2>
                     {selectedEvent.isPrivate && (
-                      <h6 style={{ color: "#4d7a57", marginBottom: "20px" }}>Organizer: Private</h6>
+                      <h6 style={{ color: "#4d7a57", marginBottom: "20px" }}>
+                        Organizer: Private
+                      </h6>
                     )}
-                    <p style={{ color: "#4d7a57" }}>{selectedEvent.description}</p>
+                    <p style={{ color: "#4d7a57" }}>
+                      {selectedEvent.description}
+                    </p>
                   </div>
                   <button
                     type="button"

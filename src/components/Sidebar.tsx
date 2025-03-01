@@ -83,7 +83,7 @@ const Sidebar = () => {
           onMouseEnter={() => handleMouseEnter("Events")}
           onMouseLeave={handleMouseLeave}
         >
-          Events
+          Causes
         </NavLink>
         <NavLink
           to="/OurMission"
