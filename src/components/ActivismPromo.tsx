@@ -16,21 +16,21 @@ import { keyframes } from "@mui/system";
 const events = [
   {
     id: 1,
-    title: "Community Rally",
-    description: "Join us for a community rally for positive change.",
-    image: "https://picsum.photos/seed/rally/400/300",
+    title: "Southern Poverty Law Center (SPLC)",
+    description: "The Southern Poverty Law Center is a human rights organization dedicated to dismantling white supremacy, confronting hate groups, protecting vulnerable populations in the South, and providing critical resources to those in need.",
+    image: "/splc.png",
   },
   {
     id: 2,
-    title: "Volunteer Meetup",
-    description: "Meet and connect with passionate volunteers.",
-    image: "https://picsum.photos/seed/fooddrive/400/300",
+    title: "Native American Rights Fund (NARF)",
+    description: "The Native American Rights Fund provides legal assistance to Native Americans and tribes, advises policymakers, and drafts legislation to protect their rights, resources, and sovereignty.",
+    image: "/narf.png",
   },
   {
     id: 3,
-    title: "Awareness Walk",
-    description: "Walk together to raise awareness.",
-    image: "https://picsum.photos/seed/marathon/400/300",
+    title: "Media Justice",
+    description: "Media Justice advocates for universal media and technology access, emphasizing its importance for empowering marginalized communities and addressing racial, economic, and gender justice in the digital age.",
+    image: "/mediajustice.png",
   },
 ];
 

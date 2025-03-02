@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "aos/dist/aos.css"; // AOS animations
-import { Dialog, DialogTitle, DialogContent, Button } from "@mui/material";
 import Sidebar from "../components/Sidebar";
 import "./ProductListing.css";
 
@@ -12,6 +11,7 @@ interface Event {
   description: string;
   imageUrl: string;
   isPrivate?: boolean;
+  link: string; // Added link property
 }
 
 const EventListing: React.FC = () => {
@@ -21,43 +21,75 @@ const EventListing: React.FC = () => {
   const events: Event[] = [
     {
       eventId: "1",
-      title: "Community Rally",
+      title: "Southern Poverty Law Center (SPLC)",
       description:
-        "Join us for a rally in support of local environmental initiatives.",
-      imageUrl: "https://picsum.photos/seed/rally/400/300",
+        "The Southern Poverty Law Center is a human rights organization dedicated to dismantling white supremacy, confronting hate groups, protecting vulnerable populations in the South, and providing critical resources to those in need.",
+      imageUrl: "/splc.png",
       isPrivate: false,
+      link: "https://www.splcenter.org",
     },
     {
       eventId: "2",
-      title: "Food Drive Extravaganza",
+      title: "International Organization for Migration",
       description:
-        "Help us collect food for the needy. Your donation can make a difference!",
-      imageUrl: "https://picsum.photos/seed/fooddrive/400/300",
+        "The International Organization for Migration, part of the United Nations system, supports migrants globally by promoting humane, orderly migration and assisting governments in upholding migrants’ rights and dignity.",
+      imageUrl: "/iom.png",
       isPrivate: false,
+      link: "https://www.iom.int",
     },
     {
       eventId: "3",
-      title: "Charity Marathon",
+      title: "Native American Rights Fund (NARF)",
       description:
-        "Run for a cause! Participate in our marathon to support community programs.",
-      imageUrl: "https://picsum.photos/seed/marathon/400/300",
+        "The Native American Rights Fund provides legal assistance to Native Americans and tribes, advises policymakers, and drafts legislation to protect their rights, resources, and sovereignty.",
+      imageUrl: "/narf.png",
       isPrivate: true,
+      link: "https://narf.org",
     },
     {
       eventId: "4",
-      title: "Neighborhood Cleanup",
+      title: "Media Justice",
       description:
-        "Gather together to clean and beautify our local parks and streets.",
-      imageUrl: "https://picsum.photos/seed/cleanup/400/300",
+        "Media Justice advocates for universal media and technology access, emphasizing its importance for empowering marginalized communities and addressing racial, economic, and gender justice in the digital age.",
+      imageUrl: "/mediajustice.png",
       isPrivate: false,
+      link: "https://mediajustice.org",
     },
     {
       eventId: "5",
-      title: "Book Donation Drive",
+      title: "National Fair Housing Alliance (NFHA)",
       description:
-        "Donate books to help spread literacy in underprivileged communities.",
-      imageUrl: "https://picsum.photos/seed/books/400/300",
+        "The National Fair Housing Alliance is a civil rights organization dedicated to eliminating housing and lending discrimination through initiatives in homeownership, credit access, education, policy, and community development.",
+      imageUrl: "/nfha.png",
       isPrivate: false,
+      link: "https://nationalfairhousing.org",
+    },
+    {
+      eventId: "6",
+      title: "First Step Alliance",
+      description:
+        "First Step Alliance supports justice-involved individuals by improving access to financial education, banking services, and is establishing a federal credit union to aid their reentry and financial independence.",
+      imageUrl: "/firststepalliance.png",
+      isPrivate: false,
+      link: "https://www.firststepalliance.org",
+    },
+    {
+      eventId: "7",
+      title: "Girls Inc",
+      description:
+        "Girls Inc. empowers young girls through mentoring, pro-girl environments, and programs to build self-esteem, strength, and independence while overcoming social, economic, and gender barriers.",
+      imageUrl: "/girlsinc.png",
+      isPrivate: false,
+      link: "https://www.girlsinc.org",
+    },
+    {
+      eventId: "8",
+      title: "First Star",
+      description:
+        "First Star is a national organization that helps foster children succeed by providing academic support, life skills, and adult guidance for their transition to adulthood.",
+      imageUrl: "/firststar.jpg",
+      isPrivate: false,
+      link: "https://www.firststar.org",
     },
   ];
 
@@ -93,7 +125,7 @@ const EventListing: React.FC = () => {
                 Act Now
               </h1>
               <p style={{ color: "#4d7a57" }}>
-                Explore local activism initiatives—from rallies to food drives
+                Explore both local and global activism initiatives—all personally vetted by us! (Verification provided via CharityWatch)
               </p>
             </div>
           </div>
@@ -206,19 +238,24 @@ const EventListing: React.FC = () => {
                       {selectedEvent.description}
                     </p>
                   </div>
-                  <button
-                    type="button"
+                  <a
+                    href={selectedEvent.link} // Uses the specific event's link
+                    target="_blank" // Opens in a new tab
+                    rel="noopener noreferrer" // Security best practice
                     className="btn"
                     style={{
                       alignSelf: "flex-start",
                       marginTop: "10px",
                       backgroundColor: "#4d7a57",
                       color: "white",
+                      textDecoration: "none",
+                      padding: "10px 15px",
+                      borderRadius: "5px",
+                      display: "inline-block",
                     }}
-                    onClick={() => alert("The organizer has been notified!")}
                   >
-                    I am interested!
-                  </button>
+                    Take Action!
+                  </a>
                   <button
                     type="button"
                     style={{
